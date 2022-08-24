@@ -17,3 +17,25 @@ app = Flask(__name__)
 def hello():
     return "The Recommender system is working!"
 
+@app.route("/api/parseinfo",methods=["GET"])
+def api_parse():
+
+    test_dict = [
+        {
+            "color": "red",
+            "value": "#f00"
+        },
+        {
+            "color": "green",
+            "value": "#0f0"
+        },
+        {
+            "color": "blue",
+            "value": "#00f"
+        },
+        {
+            "color": "cyan",
+            "value": "#0ff"
+        }
+    ]
+    return jsonify(test_dict)
