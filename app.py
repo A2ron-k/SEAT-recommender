@@ -93,6 +93,6 @@ def api_parse_test():
     final_result = {
                     'attractions': decoded_attractionID_list
                     }
-    print("AARON -> Encoding - Success")
+    print("AARON -> Data Preparation - Success")
 
     return jsonify(final_result)
