@@ -8,7 +8,7 @@
 # Step 2. Git add and commit to repo
 # Step 3. Git heroku push main
 
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 
 
 app = Flask(__name__)
@@ -40,26 +40,29 @@ def api_parse():
     ]
     return jsonify(test_dict)
 
-@app.route("/api/parseinfotest",methods=["GET"])
+@app.route("/api/parseinfotest",methods=["POST"])
 def api_parse_test():
     import tensorflow as tf
     import numpy as np
     import json
 
-    # Encoder Class
-    # Helps with np.ndarray/bytes to dict/list
-    # The `default` method is called with the object that is to be serialized. 
-    # The `default` method returns a serializable object.
-    class MyEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, np.ndarray):
-                return obj.tolist()
-            elif isinstance(obj, bytes):
-                return str(obj, encoding='utf-8');
-            return json.JSONEncoder.default(self, obj)
+    # Extract JSON Data from POST Request
+    json_data = request.json
+
+    input_userID = json_data['userid']
+    input_indoorOutdoorScore = json_data['input_indoorOutdoorScore']
+    input_leisureThrillScore = json_data['input_leisureThrillScore']
+    input_cheapExpensiveScore = json_data['input_cheapExpensiveScore']
+
+    INPUT = {
+            "userid": np.array([input_userID]), 
+            "indoorOutdoorScore": np.array([np.int32(input_indoorOutdoorScore)]),
+            "leisureThrillScore": np.array([np.int32(input_leisureThrillScore)]),
+            "cheapExpensiveScore": np.array([np.int32(input_cheapExpensiveScore)])
+        }
 
     # Set Tensorflow Model Directory
-    MODEL_PATH = "./tfmodel/"
+    MODEL_PATH = "./model/"
 
     # Load & Compile Tensorflow Model
     loaded_model = tf.saved_model.load(MODEL_PATH)
@@ -67,21 +70,29 @@ def api_parse_test():
 
     # Parse userID value into TensorFlow BruteForce Layer to predict
     # Expected results into scores and titles (tf.tensor type)
-    scores, titles = loaded_model(['42'])
+    scores, attractionID = loaded_model([INPUT])
     print("AARON -> Model Predicted - Success")
-    print(titles[0][:3])
 
     # Convert Tf.tensor to NdArray
-    titles_ndArr = titles.numpy()
-    print(titles_ndArr)
+    attractionID_tensor = attractionID[0][:5]
+    attractionID_ndArr = attractionID_tensor.numpy()
     print("AARON -> Convert to nd_Array - Success")
     
-    # Convert NdArray to byte/ list
-    titles_bytesList = titles_ndArr.tolist()
-    print("AARON -> Convert to bytesList - Success")
+    # Convert NdArray to list
+    attractionID_list = attractionID_ndArr.tolist()
+    print("AARON -> Convert to list - Success")
 
-    # Encodes bytesList to serialised object to be parse out to API Requester
-    encoded = json.dumps(titles_bytesList,cls=MyEncoder,indent=4)
+    # Decodes List to serialised list 
+    # to be parse out to API Requester
+    decoded_attractionID_list = []
+    for value in attractionID_list:
+        decoded_value = value.decode('utf-8')
+        decoded_attractionID_list.append(decoded_value)
+
+    # Processing of list to JSON format
+    final_result = {
+                    'attractions': decoded_attractionID_list
+                    }
     print("AARON -> Encoding - Success")
 
-    return jsonify(encoded)
+    return jsonify(final_result)
