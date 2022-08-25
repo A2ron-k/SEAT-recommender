@@ -47,7 +47,7 @@ def api_recommend():
 
     # Parse userID value into TensorFlow BruteForce Layer to predict
     # Expected results into scores and titles (tf.tensor type)
-    scores, attractionID = loaded_model([INPUT])
+    scores, attractionID = loaded_model(INPUT)
     print("AARON -> Model Predicted - Success")
 
     # Convert Tf.tensor to NdArray
