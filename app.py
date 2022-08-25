@@ -17,31 +17,8 @@ app = Flask(__name__)
 def hello():
     return "The Recommender system is working!"
 
-@app.route("/api/parseinfo",methods=["GET"])
-def api_parse():
-
-    test_dict = [
-        {
-            "color": "red",
-            "value": "#f00"
-        },
-        {
-            "color": "green",
-            "value": "#0f0"
-        },
-        {
-            "color": "blue",
-            "value": "#00f"
-        },
-        {
-            "color": "cyan",
-            "value": "#0ff"
-        }
-    ]
-    return jsonify(test_dict)
-
-@app.route("/api/parseinfotest",methods=["POST"])
-def api_parse_test():
+@app.route("/api/recommender",methods=["POST"])
+def api_recommend():
     import tensorflow as tf
     import numpy as np
     import json
