@@ -19,12 +19,11 @@ CORS(app)
 def hello():
     return "The Recommender system is working!"
 
-@app.route("/api/recommender",methods=["POST"])
-@cross_origin(origin='*')
+@app.route("/api/recommender",methods=["OPTIONS","POST"])
+@cross_origin()
 def api_recommend():
     import tensorflow as tf
     import numpy as np
-    import json
 
     # Extract JSON Data from POST Request
     json_data = request.json
