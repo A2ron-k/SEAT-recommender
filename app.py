@@ -9,15 +9,18 @@
 # Step 3. Git heroku push main
 
 from flask import Flask,jsonify,request
-
+from flask_cors import CORS,cross_origin
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
+@cross_origin(origin='*')
 def hello():
     return "The Recommender system is working!"
 
 @app.route("/api/recommender",methods=["POST"])
+@cross_origin(origin='*')
 def api_recommend():
     import tensorflow as tf
     import numpy as np
