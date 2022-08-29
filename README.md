@@ -21,6 +21,7 @@ $ curl --location --request POST 'https://seat-recommender-api.herokuapp.com/api
 You may also choose to send a POST request via an external application such as React to the same URL Route with the body containing the following.
  
 **An example of JSON Object Input**
+
 {
     "userid": "2",
     "input_indoorOutdoorScore": 5,
