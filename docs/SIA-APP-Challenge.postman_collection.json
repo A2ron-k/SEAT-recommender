@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "3e1b34f7-edcf-4df2-bf57-8295aa93450f",
+		"name": "SIA-APP-Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11771909"
+	},
+	"item": [
+		{
+			"name": "Recommend",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userid\" : \"2\",\n    \"input_indoorOutdoorScore\": 1,\n    \"input_leisureThrillScore\": 3,\n    \"input_cheapExpensiveScore\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://seat-recommender-api.herokuapp.com/api/recommender",
+					"protocol": "https",
+					"host": [
+						"seat-recommender-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"recommender"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
